@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="DomainEvents\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DDD.Domain\DDD.Domain.csproj" />
+    <ProjectReference Include="..\DDD.Shared.Abstraction\DDD.Shared.Abstraction.csproj" />
+  </ItemGroup>
+
 </Project>
