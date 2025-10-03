@@ -5,25 +5,16 @@ using DDD.Shared.Abstraction.Commands;
 
 namespace DDD.Application.Commands.Course.Handlers;
 
-public class UpdateCourseHandler : ICommandHandler<UpdateCourse>
+public class UpdateCourseHandler(ICourseRepository repository, ICourseFactory factory) : ICommandHandler<UpdateCourse>
 {
-	private readonly ICourseRepository repository;
-	private readonly ICourseFactory factory;
+    public async Task HandleAsync(UpdateCourse command)
+    {
+        var course = await repository.GetAsync(command.id);
+        if (course == null)
+        {
+            throw new CourseNotFoundException();
+        }
 
-	public UpdateCourseHandler(ICourseRepository repository, ICourseFactory factory)
-	{
-		this.repository = repository;
-		this.factory = factory;
-	}
-
-	public async Task HandleAsync(UpdateCourse command)
-	{
-		var course = await repository.GetAsync(command.id);
-		if (course == null)
-		{
-			throw new CourseNotFoundException();
-		}
-
-		course = factory.Create(course.Id, command.title, command.description, command.isFree, command.price, command.instructorId);
-	}
+        course = factory.Create(course.Id, command.title, command.description, command.isFree, command.price, command.instructorId);
+    }
 }
